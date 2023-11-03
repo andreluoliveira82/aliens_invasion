@@ -1,0 +1,4 @@
+Planejamento do Projeto Invasão Alienigena
+Descrição da jogabilidade geral
+
+No jogo Invasão Alienigena, o jogador controla uma espaçonave que aparece no centro inferior da tela. O jogador pode manobrar a espaçonave para a direita e para a esquerda, usando as setas do teclado e atirar usando a barra de espaço. Quando o jogo começa uma frota de alienigenas toma conta do céu, deslocando-se para cima, para baixo e para os lados da tela. O jgoador abre fogo e destroi os alienigenas. Se o jogador destruir todos os alienigenas, aparece uma nova frota que se deslova mais rápido que a frota anterior. Se algum alienígena abater a espaçonave do jogador ou a parte inferior da tela, o jogador perde a espaçonave. Se o jogador perder três esapçonaves, o jogo termina.
