@@ -4,6 +4,8 @@ from settings import Settings
 from ship import Ship
 
 class AlienInvasion:
+    """Classe geral para gerenciar os ativos e comportamento do jogo"""
+
     def __init__(self):
         """Inicialia o jogo e cria recursos do jogo"""
         pygame.init()
@@ -17,25 +19,53 @@ class AlienInvasion:
 
         self.ship = Ship(self)
 
-        # # define a cor do background
-        # self.bg_color = (230, 230, 230)
-
     #--------------------------------------------------------------------    
+    def _check_events(self):
+        # responde as teclas pressionadas e a  eventos do mouse
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                    sys.exit()
+                
+            elif event.type == pygame.KEYDOWN:
+                self._check_keydown_events(event)
+                
+            elif event.type == pygame.KEYUP:
+                self._check_keyup_events(event)
+    #--------------------------------------------------------------------
+    def _check_keydown_events(self, event):
+        """Responde a teclas pressionadas"""
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+    #--------------------------------------------------------------------
+    def _check_keyup_events(self, event):
+        """Responde a teclas soltas"""
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
+
+    #--------------------------------------------------------------------
+    def _update_screen(self):
+        
+        # Redesenha a tela a cada passagem pelo loop
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme()
+            
+        # Deixa a tela desenhada mais recente visível
+        pygame.display.flip()
+
+    #--------------------------------------------------------------------
     def run_game(self):
         """Inicializa o loop principal do jogo"""
         while True:
-            # observa eventos de teclado e de mouse
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-            
-            # Redesenha a tela a cada passagem pelo loop
-            self.screen.fill(self.settings.bg_color)
-            self.ship.blitme()
-            
-            # Deixa a tela desenhada mais recente visível
-            pygame.display.flip()
-            self.clock.tick(5)
+            self._check_events()
+            self.ship.update()
+            self._update_screen()          
+            self.clock.tick(60)
         
             if __name__ =='__main__':
                 # Cria uma instancia do jogo e executa o jogo
