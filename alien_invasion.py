@@ -12,8 +12,12 @@ class AlienInvasion:
         self.clock = pygame.time.Clock()
         self.settings = Settings()
 
-        self.screen = pygame.display.set_mode(
-            (self.settings.screen_width, self.settings.screen_height))
+        self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
+
+        # self.screen = pygame.display.set_mode(
+        #     (self.settings.screen_width, self.settings.screen_height))
         
         pygame.display.set_caption("Alen Invasion")
 
@@ -39,6 +43,9 @@ class AlienInvasion:
 
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
+        # caso o usuario pressionar a tecla 'q' encerra o jogo
+        elif event.key == pygame.K_q:
+            sys.exit()
     #--------------------------------------------------------------------
     def _check_keyup_events(self, event):
         """Responde a teclas soltas"""
@@ -65,7 +72,7 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self._update_screen()          
-            self.clock.tick(60)
+            self.clock.tick(25)
         
             if __name__ =='__main__':
                 # Cria uma instancia do jogo e executa o jogo
