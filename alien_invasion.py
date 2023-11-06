@@ -2,10 +2,11 @@ import sys
 import pygame
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 class AlienInvasion:
     """Classe geral para gerenciar os ativos e comportamento do jogo"""
-
+    #--------------------------------------------------------------------
     def __init__(self):
         """Inicialia o jogo e cria recursos do jogo"""
         pygame.init()
@@ -22,6 +23,7 @@ class AlienInvasion:
         pygame.display.set_caption("Alen Invasion")
 
         self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
 
     #--------------------------------------------------------------------    
     def _check_events(self):
@@ -46,6 +48,8 @@ class AlienInvasion:
         # caso o usuario pressionar a tecla 'q' encerra o jogo
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
     #--------------------------------------------------------------------
     def _check_keyup_events(self, event):
         """Responde a teclas soltas"""
@@ -60,10 +64,19 @@ class AlienInvasion:
         
         # Redesenha a tela a cada passagem pelo loop
         self.screen.fill(self.settings.bg_color)
+
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+
         self.ship.blitme()
             
         # Deixa a tela desenhada mais recente visível
         pygame.display.flip()
+    #--------------------------------------------------------------------
+    def _fire_bullet(self):
+        """Cria um novo projétil e o adicion ao grupo de projeteis"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
 
     #--------------------------------------------------------------------
     def run_game(self):
@@ -71,8 +84,9 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
+            self.bullets.update()
             self._update_screen()          
-            self.clock.tick(25)
+            self.clock.tick(10)
         
             if __name__ =='__main__':
                 # Cria uma instancia do jogo e executa o jogo
