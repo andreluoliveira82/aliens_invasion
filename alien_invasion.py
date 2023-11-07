@@ -37,6 +37,7 @@ class AlienInvasion:
                 
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            
     #--------------------------------------------------------------------
     def _check_keydown_events(self, event):
         """Responde a teclas pressionadas"""
@@ -75,8 +76,20 @@ class AlienInvasion:
     #--------------------------------------------------------------------
     def _fire_bullet(self):
         """Cria um novo projétil e o adicion ao grupo de projeteis"""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+    
+    def _update_bullets(self):
+        """Atualiza a posição dos projéteis e descarta os projéteis antigos"""
+        # atualiza a posição dos projeteis
+        self.bullets.update()
+
+         # descarta os pojéteis que desaparecem
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <=0:
+                self.bullets.remove(bullet)
+        # print(len(self.bullets))
 
     #--------------------------------------------------------------------
     def run_game(self):
@@ -84,9 +97,9 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
-            self.bullets.update()
+            self._update_bullets()            
             self._update_screen()          
-            self.clock.tick(10)
+            self.clock.tick(60)
         
             if __name__ =='__main__':
                 # Cria uma instancia do jogo e executa o jogo
